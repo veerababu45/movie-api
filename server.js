@@ -1,35 +1,32 @@
 const express = require("express");
-const cors = require("cors");
-
 const app = express();
-app.use(cors());
-
-const movies = require("./movies.json");
-
-// root route
-app.get("/", (req, res) => {
-    res.send("Movie API running");
-});
-
-// get all movies
-app.get("/api/movies", (req, res) => {
-    res.json(movies);
-});
-
-// get single movie
-app.get("/api/movies/:rank", (req, res) => {
-    const rank = parseInt(req.params.rank);
-    const movie = movies.find(m => m.rank === rank);
-
-    if(movie){
-        res.json(movie);
-    } else {
-        res.status(404).json({message: "Movie not found"});
-    }
-});
 
 const PORT = process.env.PORT || 3000;
 
+// create 250 movies
+const movies = [];
+
+const genres = ["Action", "Drama", "Comedy", "Sci-Fi", "Crime", "Adventure", "Thriller"];
+
+for (let i = 1; i <= 250; i++) {
+  movies.push({
+    id: i,
+    title: `Top IMDb Movie ${i}`,
+    year: 1950 + (i % 75),
+    rating: (8 + (i % 20) / 10).toFixed(1),
+    genre: genres[i % genres.length]
+  });
+}
+
+// API route
+app.get("/", (req, res) => {
+  res.json({
+    total: movies.length,
+    movies: movies
+  });
+});
+
+// start server
 app.listen(PORT, () => {
-    console.log("Server running on port", PORT);
+  console.log(`Server running on port ${PORT}`);
 });
