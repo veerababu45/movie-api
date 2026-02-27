@@ -1,5 +1,8 @@
+const cors = require("cors");
 const express = require("express");
 const app = express();
+
+app.use(cors()); // ✅ THIS LINE FIXES CORS
 
 const PORT = process.env.PORT || 3000;
 
