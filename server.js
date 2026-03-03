@@ -2,13 +2,11 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 
-app.use(cors()); // ✅ THIS LINE FIXES CORS
+app.use(cors());
 
 const PORT = process.env.PORT || 3000;
 
-// create 250 movies
 const movies = [];
-
 const genres = ["Action", "Drama", "Comedy", "Sci-Fi", "Crime", "Adventure", "Thriller"];
 
 for (let i = 1; i <= 250; i++) {
@@ -17,11 +15,11 @@ for (let i = 1; i <= 250; i++) {
     title: `Top IMDb Movie ${i}`,
     year: 1950 + (i % 75),
     rating: (8 + (i % 20) / 10).toFixed(1),
-    genre: genres[i % genres.length]
+    genre: genres[i % genres.length],
+    img_link: `https://picsum.photos/seed/movie${i}/200/300`
   });
 }
 
-// API route
 app.get("/", (req, res) => {
   res.json({
     total: movies.length,
@@ -29,7 +27,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
